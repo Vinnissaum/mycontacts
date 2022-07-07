@@ -34,10 +34,29 @@ class ContactsRepository {
     });
   }
 
-  create({ contact }) {
+  create({
+    name, email, phone, category_id,
+  }) {
     return new Promise((resolve) => {
-      contacts.push({ id: v4(), ...contact });
+      contacts.push({
+        id: v4(), name, email, phone, category_id,
+      });
       resolve();
+    });
+  }
+
+  update(id, {
+    name, email, phone, category_id,
+  }) {
+    return new Promise((resolve) => {
+      const updatedContact = {
+        id, name, email, phone, category_id,
+      };
+
+      contacts = contacts.map((contact) => (
+        contact.id === id ? updatedContact : contact
+      ));
+      resolve(updatedContact);
     });
   }
 

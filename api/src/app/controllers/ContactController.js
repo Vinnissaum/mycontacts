@@ -33,7 +33,7 @@ class ContactController {
 
     const emailExists = await ContactsRepository.findByEmail(email);
     if (emailExists) {
-      return response.status(400).json({ error: 'This email already exists' });
+      return response.status(400).json({ error: 'This email is already in use' });
     }
 
     const contact = await ContactsRepository.create({
@@ -43,8 +43,32 @@ class ContactController {
     response.json(contact);
   }
 
-  update() {
+  async update(request, response) {
     // Update a register
+    const { id } = request.params;
+    const {
+      name, email, phone, category_id,
+    } = request.body;
+
+    const contactExists = await ContactsRepository.findById(id);
+    if (!contactExists) {
+      return response.status(404).json({ error: 'Contact not found' });
+    }
+
+    if (!name) {
+      return response.status(400).json({ error: 'Name is required' });
+    }
+
+    const emailExists = await ContactsRepository.findByEmail(email);
+    if (emailExists && emailExists.id !== id) {
+      return response.status(400).json({ error: 'This email is already in use' });
+    }
+
+    const updatedContact = await ContactsRepository.update(id, {
+      name, email, phone, category_id,
+    });
+
+    response.json(updatedContact);
   }
 
   async delete(request, response) {
