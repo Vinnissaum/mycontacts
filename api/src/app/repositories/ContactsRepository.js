@@ -28,6 +28,19 @@ class ContactsRepository {
     });
   }
 
+  findByEmail(email) {
+    return new Promise((resolve) => {
+      resolve(contacts.find((contact) => contact.email === email));
+    });
+  }
+
+  create({ contact }) {
+    return new Promise((resolve) => {
+      contacts.push({ id: v4(), ...contact });
+      resolve();
+    });
+  }
+
   delete(id) {
     return new Promise((resolve) => {
       contacts = contacts.filter((contact) => contact.id !== id);
