@@ -2,9 +2,15 @@ const db = require('../../database');
 
 class CategoriesRepository {
   async findAll() {
-    const rows = await db.query('SELECT * FROM categories');
+    const rows = await db.query('SELECT * FROM categories ORDER BY name');
 
     return rows;
+  }
+
+  async findById({ id }) {
+    const [row] = await db.query('SELECT * FROM categories WHERE id = $1', [id]);
+
+    return row;
   }
 
   async create({ name }) {
@@ -15,6 +21,23 @@ class CategoriesRepository {
     `, [name]);
 
     return row;
+  }
+
+  async update(id, { name }) {
+    const [row] = await db.query(`
+      UPDATE categories SET name = $1
+      WHERE id = $2
+      RETURNING *
+    `, [name, id]);
+
+    return row;
+  }
+
+  async delete(id) {
+    const deleteOp = await db.query(`
+      DELETE from categories WHERE id = $1`, [id]);
+
+    return deleteOp;
   }
 }
 
