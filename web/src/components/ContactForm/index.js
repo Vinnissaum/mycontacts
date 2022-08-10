@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import propTypes from 'prop-types';
 
+import isEmailValid from '../../utils/isEmailValid';
+
 import FormGroup from '../FormGroup';
 import { Form, ButtonContainer } from './styles';
 import Input from '../Input';
@@ -35,6 +37,25 @@ export default function ContactForm({ buttonLabel }) {
     }
   };
 
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+
+    if (event.target.value && !isEmailValid(event.target.value)) {
+      const emailErrorExists = errors.find((err) => err.field === 'email');
+
+      if (emailErrorExists) {
+        return;
+      }
+
+      setErrors((prevState) => [
+        ...prevState,
+        { field: 'email', message: 'E-mail inválido.' },
+      ]);
+    } else {
+      setErrors((prevState) => prevState.filter((err) => err.field !== 'email'));
+    }
+  };
+
   console.log(errors);
 
   return (
@@ -52,7 +73,7 @@ export default function ContactForm({ buttonLabel }) {
           placeholder="E-mail"
           error
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={handleEmailChange}
         />
       </FormGroup>
 
