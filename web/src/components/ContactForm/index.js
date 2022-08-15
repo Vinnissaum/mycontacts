@@ -18,10 +18,6 @@ export default function ContactForm({ buttonLabel }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log({
-      name, email, phone, category,
-    });
   };
 
   const handleNameChange = (event) => {
@@ -56,22 +52,24 @@ export default function ContactForm({ buttonLabel }) {
     }
   };
 
-  console.log(errors);
+  const getErrorMessageByFieldName = (fieldName) => (
+    errors.find((err) => err.field === fieldName)?.message);
 
   return (
     <Form onSubmit={handleSubmit}>
-      <FormGroup>
+      <FormGroup error={getErrorMessageByFieldName('name')}>
         <Input
+          error={getErrorMessageByFieldName('name')}
           placeholder="Nome"
           value={name}
           onChange={handleNameChange}
         />
       </FormGroup>
 
-      <FormGroup error="O formato do e-mail é inválido">
+      <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
+          error={getErrorMessageByFieldName('email')}
           placeholder="E-mail"
-          error
           value={email}
           onChange={handleEmailChange}
         />
