@@ -51,13 +51,10 @@ export const Header = styled.header`
   }
   `;
 
-export const ListContainer = styled.div`
+export const ListHeader = styled.header`
   margin-top: 24px;
 
-  header {
-    margin-bottom: 8px;
-
-    button {
+  button {
     background: transparent;
     border: none;
     display: flex;
@@ -68,8 +65,12 @@ export const ListContainer = styled.div`
         color: ${({ theme }) => theme.colors.primary.main};
         font-weight: bold;
       }
+
+      img.arrow {
+        transform: ${({ orderBy }) => (orderBy === 'ASC' ? 'rotate(0deg)' : 'rotate(180deg)')};
+        transition: transform 0.2s ease-in;
+      }
     }
-  }
 `;
 
 export const Card = styled.div`
@@ -80,6 +81,7 @@ export const Card = styled.div`
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
   border-radius: 4px;
   padding: 16px;
+  margin-top: 8px;
 
   & + & {
     margin-top: 16px;
@@ -112,6 +114,10 @@ export const Card = styled.div`
   .actions {
     display: flex;
     align-items: center;
+
+    a {
+      margin-top: 6px;
+    }
 
     button {
       background: transparent;
