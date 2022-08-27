@@ -20,15 +20,33 @@ export default function Home() {
     .includes(searchTerm.toLowerCase())), [contacts, searchTerm]);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/contacts?order=${orderBy}`)
-      .then(async (response) => {
+    (async () => {
+      try {
         setIsContactsLoading(true);
+
+        const response = await fetch(
+          `http://localhost:3001/contacts?order=${orderBy}`,
+        );
         await delay(2000);
+
         const json = await response.json();
         setContacts(json);
-      })
-      .finally(() => setIsContactsLoading(false));
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsContactsLoading(false);
+      }
+    })();
   }, [orderBy]);
+  //   fetch(`http://localhost:3001/contacts?order=${orderBy}`)
+  //     .then(async (response) => {
+  //       setIsContactsLoading(true);
+  //       await delay(2000);
+  //       const json = await response.json();
+  //       setContacts(json);
+  //     })
+  //     .finally(() => setIsContactsLoading(false));
+  // }, [orderBy]);
 
   const handleToggleOrderBy = () => {
     setOrderBy((prevState) => (prevState === 'ASC' ? 'DESC' : 'ASC'));
