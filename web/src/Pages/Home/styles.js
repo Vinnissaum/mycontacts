@@ -115,10 +115,6 @@ export const Card = styled.div`
     display: flex;
     align-items: center;
 
-    a {
-      margin-top: 6px;
-    }
-
     button {
       background: transparent;
       border: none;
